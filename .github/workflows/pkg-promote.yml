@@ -26,7 +26,7 @@ jobs:
     if: ${{ contains(github.event.head_commit.modified, 'docker') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish to GitHub Packages
         uses: docker/build-push-action@v4
         with:
@@ -38,7 +38,7 @@ jobs:
     if: ${{ contains(github.event.head_commit.modified, 'gradle') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish to GitHub Packages
         uses: burrunan/gradle-cache-action@v1
         with:
@@ -52,7 +52,7 @@ jobs:
     if: ${{ contains(github.event.head_commit.modified, 'maven') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish to GitHub Packages
         uses: actions/setup-java@v3
         with:
@@ -66,7 +66,7 @@ jobs:
     if: ${{ contains(github.event.head_commit.modified, 'npm') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish to GitHub Packages
         uses: actions/setup-node@v2
         with:
@@ -79,7 +79,7 @@ jobs:
     if: ${{ contains(github.event.head_commit.modified, 'nuget') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish to GitHub Packages
         uses: nuget/setup-nuget@v1
       - name: Publish to GitHub Packages
@@ -88,7 +88,7 @@ jobs:
     if: ${{ contains(github.event.head_commit.modified, 'ruby') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Publish to GitHub Packages
         uses: ruby/setup-ruby@v1
         with:
