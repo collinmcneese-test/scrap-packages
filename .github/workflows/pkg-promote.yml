@@ -22,9 +22,15 @@ on:
       - 'ruby/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   publish-container:
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
