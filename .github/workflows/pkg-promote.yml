@@ -34,13 +34,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Log in to the Container registry
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@507c2f2dc502c992ad446e3d7a5dfbe311567a96
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: Publish to GitHub Packages
         uses: docker/build-push-action@v4
         with:
-          context: docker
+          context: ./docker
           file: docker/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/docker:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
   # publish-gradle:
   #   runs-on: ubuntu-latest
   #   steps:
