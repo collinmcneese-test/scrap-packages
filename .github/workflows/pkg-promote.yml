@@ -20,6 +20,8 @@ on:
       - 'npm/**'
       - 'nuget/**'
       - 'ruby/**'
+  workflow_dispatch:
+
 
 jobs:
   publish-container:
