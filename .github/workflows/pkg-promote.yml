@@ -23,7 +23,6 @@ on:
 
 jobs:
   publish-container:
-    if: ${{ contains(github.event.head_commit.modified, 'docker') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,66 +33,61 @@ jobs:
           file: docker/Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/docker:latest
-  publish-gradle:
-    if: ${{ contains(github.event.head_commit.modified, 'gradle') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish to GitHub Packages
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          arguments: publish
-          gradle-version: 6.8.3
-          publish-maven-central: false
-          publish-sonatype: false
-          publish-gradle-plugin-portal: false
-          publish-github-packages: true
-  publish-maven:
-    if: ${{ contains(github.event.head_commit.modified, 'maven') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish to GitHub Packages
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-      - name: Publish to GitHub Packages
-        run: cd maven && mvn deploy -B -DskipTests -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  publish-npm:
-    if: ${{ contains(github.event.head_commit.modified, 'npm') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish to GitHub Packages
-        uses: actions/setup-node@v3
-        with:
-          registry-url: https://npm.pkg.github.com
-      - name: Publish to GitHub Packages
-        run: cd npm && npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  publish-nuget:
-    if: ${{ contains(github.event.head_commit.modified, 'nuget') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish to GitHub Packages
-        uses: nuget/setup-nuget@v1
-      - name: Publish to GitHub Packages
-        run: cd nuget && nuget push *.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} -ApiKey ${{ secrets.GITHUB_TOKEN }}
-  publish-ruby:
-    if: ${{ contains(github.event.head_commit.modified, 'ruby') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Publish to GitHub Packages
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Publish to GitHub Packages
-        run: cd ruby && gem build *.gemspec && gem push *.gem --key github --host https://rubygems.pkg.github.com/${{ github.repository_owner }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # publish-gradle:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Publish to GitHub Packages
+  #       uses: burrunan/gradle-cache-action@v1
+  #       with:
+  #         arguments: publish
+  #         gradle-version: 6.8.3
+  #         publish-maven-central: false
+  #         publish-sonatype: false
+  #         publish-gradle-plugin-portal: false
+  #         publish-github-packages: true
+  # publish-maven:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Publish to GitHub Packages
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         distribution: 'zulu'
+  #         java-version: '11'
+  #     - name: Publish to GitHub Packages
+  #       run: cd maven && mvn deploy -B -DskipTests -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # publish-npm:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Publish to GitHub Packages
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         registry-url: https://npm.pkg.github.com
+  #     - name: Publish to GitHub Packages
+  #       run: cd npm && npm publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # publish-nuget:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Publish to GitHub Packages
+  #       uses: nuget/setup-nuget@v1
+  #     - name: Publish to GitHub Packages
+  #       run: cd nuget && nuget push *.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} -ApiKey ${{ secrets.GITHUB_TOKEN }}
+  # publish-ruby:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Publish to GitHub Packages
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         bundler-cache: true
+  #     - name: Publish to GitHub Packages
+  #       run: cd ruby && gem build *.gemspec && gem push *.gem --key github --host https://rubygems.pkg.github.com/${{ github.repository_owner }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
