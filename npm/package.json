@@ -1,5 +1,5 @@
 {
-  "name": "@mydevsandbox-com/scrap-pkg",
+  "name": "@collinmcneese-test/scrap-pkg",
   "version": "1.0.1",
   "description": "test npm package",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mydevsandbox-com/scrap-packages.git"
+    "url": "git+https://github.com/collinmcneese-test/scrap-packages.git"
   },
   "author": "collinmcneese",
   "license": "ISC",
