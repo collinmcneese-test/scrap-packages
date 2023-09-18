@@ -4,11 +4,29 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      # This is the name of your group, it will be used in PR titles and branch names
+      actions-deps:
+        # A pattern can be...
+        patterns:
+          - "*"
   - package-ecosystem: "docker"
     directory: "/docker"
     schedule:
       interval: "weekly"
+    groups:
+      # This is the name of your group, it will be used in PR titles and branch names
+      docker-deps:
+        # A pattern can be...
+        patterns:
+          - "*"
   - package-ecosystem: "npm"
     directory: "/npm"
     schedule:
       interval: "weekly"
+    groups:
+      # This is the name of your group, it will be used in PR titles and branch names
+      npm-deps:
+        # A pattern can be...
+        patterns:
+          - "*"
