@@ -1,6 +1,6 @@
 {
   "name": "@collinmcneese-test/scrap-pkg",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "test npm package",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,6 @@
   "author": "collinmcneese",
   "license": "ISC",
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com/"
+    "registry": "https://npm.pkg.github.com/"
   }
 }
