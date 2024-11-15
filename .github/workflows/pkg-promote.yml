@@ -28,7 +28,7 @@ jobs:
       - name: List changed files
         id: changed_files
         run: |
-          git diff --name-only main > changed_files.txt
+          git diff --name-only origin/main > changed_files.txt
           echo "files='$(cat changed_files.txt)'"
         shell: bash
   publish-container:
