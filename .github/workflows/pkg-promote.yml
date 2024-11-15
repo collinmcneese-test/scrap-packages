@@ -26,7 +26,7 @@ jobs:
       - name: List changed files
         id: changed_files
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          git diff --name-only ${{ github.base_ref }} ${{ github.sha }} > changed_files.txt
           echo "files='$(cat changed_files.txt)'"
         shell: bash
   publish-container:
