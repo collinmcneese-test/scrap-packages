@@ -29,7 +29,11 @@ jobs:
         id: changed_files
         run: |
           git diff --name-only origin/main > changed_files.txt
-          echo -n "files='$(cat changed_files.txt)'" >> $GITHUB_OUTPUT
+          {
+            echo 'files<<EOF'
+            cat changed_files.txt
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
         shell: bash
   publish-container:
     needs: changed-files
