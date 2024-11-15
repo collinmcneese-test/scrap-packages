@@ -23,6 +23,8 @@ jobs:
       files: ${{ steps.changed_files.outputs.files }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: List changed files
         id: changed_files
         run: |
