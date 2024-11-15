@@ -1,16 +1,7 @@
-# GitHub Action to publish packages to GitHub Packages
-# Publishes packages for the following directories:
-# - docker
-# - gradle
-# - maven
-# - npm
-# - nuget
-# - ruby
-
 name: Publish Packages
 
 on:
-  push:
+  pull_request:
     branches:
       - main
     paths:
@@ -20,14 +11,27 @@ on:
       - 'npm/**'
       - 'nuget/**'
       - 'ruby/**'
-  workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
 
 jobs:
+  changed-files:
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.changed_files.outputs.files }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: List changed files
+        id: changed_files
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          echo "files='$(cat changed_files.txt)'"
+        shell: bash
   publish-container:
+    needs: changed-files
+    if: contains(needs.changed-files.outputs.files, 'docker/')
     env:
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository }}
@@ -53,6 +57,8 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
   # publish-gradle:
+  #   needs: changed-files
+  #   if: contains(needs.changed-files.outputs.files, 'gradle/')
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v4
@@ -66,6 +72,8 @@ jobs:
   #         publish-gradle-plugin-portal: false
   #         publish-github-packages: true
   # publish-maven:
+  #   needs: changed-files
+  #   if: contains(needs.changed-files.outputs.files, 'maven/')
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v4
@@ -79,6 +87,8 @@ jobs:
   #       env:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-npm:
+    needs: changed-files
+    if: contains(needs.changed-files.outputs.files, 'npm/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -90,15 +100,18 @@ jobs:
         run: cd npm && npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # publish-nuget:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Publish to GitHub Packages
-  #       uses: nuget/setup-nuget@v1
-  #     - name: Publish to GitHub Packages
-  #       run: cd nuget && nuget push *.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} -ApiKey ${{ secrets.GITHUB_TOKEN }}
+  publish-nuget:
+    needs: changed-files
+    if: contains(needs.changed-files.outputs.files, 'nuget/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish to GitHub Packages
+        uses: nuget/setup-nuget@v1
+      - name: Publish to GitHub Packages
+        run: cd nuget && nuget push *.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} -ApiKey ${{ secrets.GITHUB_TOKEN }}
   # publish-ruby:
+  #   needs: changed-files
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v4
