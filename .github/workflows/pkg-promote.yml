@@ -1,6 +1,16 @@
 name: Publish Packages
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docker/**'
+      - 'gradle/**'
+      - 'maven/**'
+      - 'npm/**'
+      - 'nuget/**'
+      - 'ruby/**'
   pull_request:
     branches:
       - main
@@ -56,6 +66,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: Publish to GitHub Packages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v6
         with:
           context: ./docker
@@ -69,6 +80,7 @@ jobs:
   #   steps:
   #     - uses: actions/checkout@v4
   #     - name: Publish to GitHub Packages
+  #       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #       uses: burrunan/gradle-cache-action@v1
   #       with:
   #         arguments: publish
@@ -89,6 +101,7 @@ jobs:
   #         distribution: 'zulu'
   #         java-version: '11'
   #     - name: Publish to GitHub Packages
+  #       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #       run: cd maven && mvn deploy -B -DskipTests -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}
   #       env:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -103,6 +116,7 @@ jobs:
         with:
           registry-url: https://npm.pkg.github.com
       - name: Publish to GitHub Packages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: cd npm && npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -115,7 +129,10 @@ jobs:
       - name: Publish to GitHub Packages
         uses: nuget/setup-nuget@v1
       - name: Publish to GitHub Packages
-        run: cd nuget && nuget push *.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} -ApiKey ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd nuget
+          dotnet pack -c Release
+          nuget push Release/*.nupkg -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} -ApiKey ${{ secrets.GITHUB_TOKEN }}
   # publish-ruby:
   #   needs: changed-files
   #   runs-on: ubuntu-latest
@@ -126,6 +143,7 @@ jobs:
   #       with:
   #         bundler-cache: true
   #     - name: Publish to GitHub Packages
+  #       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #       run: cd ruby && gem build *.gemspec && gem push *.gem --key github --host https://rubygems.pkg.github.com/${{ github.repository_owner }}
   #       env:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
