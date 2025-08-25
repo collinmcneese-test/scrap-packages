@@ -32,7 +32,7 @@ jobs:
     outputs:
       files: ${{ steps.changed_files.outputs.files }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: List changed files
@@ -53,7 +53,7 @@ jobs:
       IMAGE_NAME: ${{ github.repository }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Log in to the Container registry
         uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1
         with:
@@ -78,7 +78,7 @@ jobs:
   #   if: contains(needs.changed-files.outputs.files, 'gradle/')
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v5
   #     - name: Publish to GitHub Packages
   #       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
   #       uses: burrunan/gradle-cache-action@v1
@@ -94,7 +94,7 @@ jobs:
   #   if: contains(needs.changed-files.outputs.files, 'maven/')
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v5
   #     - name: Publish to GitHub Packages
   #       uses: actions/setup-java@v3
   #       with:
@@ -110,7 +110,7 @@ jobs:
     if: contains(needs.changed-files.outputs.files, 'npm/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Publish to GitHub Packages
         uses: actions/setup-node@v4
         with:
@@ -125,7 +125,7 @@ jobs:
     # if: contains(needs.changed-files.outputs.files, 'nuget/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Publish to GitHub Packages
         uses: nuget/setup-nuget@v2
       - name: Publish to GitHub Packages
@@ -137,7 +137,7 @@ jobs:
   #   needs: changed-files
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v5
   #     - name: Publish to GitHub Packages
   #       uses: ruby/setup-ruby@v1
   #       with:
