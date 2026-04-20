@@ -127,7 +127,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Publish to GitHub Packages
-        uses: nuget/setup-nuget@v3
+        uses: nuget/setup-nuget@v4
       - name: Publish to GitHub Packages
         run: |
           cd nuget
