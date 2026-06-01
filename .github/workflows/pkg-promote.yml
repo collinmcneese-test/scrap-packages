@@ -32,7 +32,7 @@ jobs:
     outputs:
       files: ${{ steps.changed_files.outputs.files }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
       - name: List changed files
@@ -53,7 +53,7 @@ jobs:
       IMAGE_NAME: ${{ github.repository }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Log in to the Container registry
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121
         with:
@@ -67,7 +67,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: Publish to GitHub Packages
         # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v7
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7
         with:
           context: ./docker
           file: docker/Dockerfile
@@ -110,9 +110,9 @@ jobs:
     if: contains(needs.changed-files.outputs.files, 'npm/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Publish to GitHub Packages
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           registry-url: https://npm.pkg.github.com
       - name: Publish to GitHub Packages
@@ -125,9 +125,9 @@ jobs:
     # if: contains(needs.changed-files.outputs.files, 'nuget/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Publish to GitHub Packages
-        uses: nuget/setup-nuget@v4
+        uses: nuget/setup-nuget@fd55a6f3b34392fa83fde1454582407d8c714123 # v4
       - name: Publish to GitHub Packages
         run: |
           cd nuget
